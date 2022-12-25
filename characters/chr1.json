@@ -1,0 +1,19 @@
+{
+  "name": "Jim",
+  "stress": 0,
+  "consequences": {
+    "con1": "blank",
+    "con2": "blank",
+    "con3": "blank"
+  },
+  "high_concept": "fdsfds",
+  "trouble": "fdsf",
+  "approaches": {
+    "careful": 3,
+    "clever": 2,
+    "flashy": 2,
+    "forceful": 0,
+    "quick": 1,
+    "sneaky": 1
+  }
+}
