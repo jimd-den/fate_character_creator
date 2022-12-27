@@ -9,6 +9,14 @@ use std::io::Write;
 ///
 /// We basically prompt the users for the values and give them a json of the character sheet
 
+#[derive(Debug, Serialize, Deserialize)]
+struct AspectList {
+    high_concept: String,
+    trouble: String,
+    aspect_1: String,
+    aspect_2: String,
+    aspect_3: String,
+}
 
 /// This is the Character with name, consequences approaches
 #[derive(Debug, Serialize, Deserialize)]
@@ -16,8 +24,7 @@ struct Character {
     name: String,
     stress: i32,
     consequences: ConsequenceList,
-    high_concept: String,
-    trouble: String,
+    aspect_list: AspectList,
     approaches: ApproachTuple,
 
 }
@@ -116,10 +123,32 @@ fn approach_generator() -> Vec<i32> {
 }
 
 
+fn aspect_generator() -> AspectList {
+    let mut asp_gen = AspectList {high_concept: String::new(), 
+                                  trouble: String::new(), 
+                                  aspect_1: String::new(), 
+                                  aspect_2: String::new(), 
+                                  aspect_3: String::new(),};
+    println!("Let's create your aspects:");
+    println!("Aspects are phrases or facts that are important to your character");
+    asp_gen.high_concept = prompt("Who is your character and why does this person exist?");
+    asp_gen.trouble = prompt("What is a troubling aspect about your character? ");
+    asp_gen.aspect_1 = prompt("What is another aspect of your character? (anything)  ");
+    let ans = prompt("Would you like to add additional aspects? (y)es or (n)o ");
+    if ans == "y" {
+        asp_gen.aspect_2 = prompt("2nd aspect? ");
+        asp_gen.aspect_3 = prompt("3rd aspect? ");
+        asp_gen
+    }
+    else {
+        asp_gen
+    }
+
+}
+
 fn main() {
     let _name = prompt("Name: ");
-    let _high_concept = prompt("High Concept: ");
-    let _trouble =  prompt("Trouble: ");
+    let _aspect_list = aspect_generator();
     let mut appr_vec = Vec::new();
     appr_vec =  approach_generator();
     let _appr_buf_tuple = ApproachTuple {careful: appr_vec[0], 
@@ -135,8 +164,7 @@ fn main() {
     let char_1 = Character {name: _name,
                             stress: 0,
                             consequences: cons_blank,
-                            high_concept: _high_concept,
-                            trouble: _trouble,
+                            aspect_list: _aspect_list,
                             approaches: _appr_buf_tuple,};
     let mut char_output = serde_json::to_string_pretty(&char_1).unwrap();
 
